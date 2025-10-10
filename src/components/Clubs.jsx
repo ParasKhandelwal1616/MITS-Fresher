@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import IEEE from '../assets/IEEE.jpg';
 import IETE from '../assets/IETE.jpg';
 import GFG_mits from '../assets/GFG.jpg';
@@ -90,7 +90,32 @@ const ClubCard = ({ name, logo, description, instagram, index }) => {
   );
 };
 
+
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 const Clubs = () => {
+  const [clubs, setClubs] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+
+    const fetchClubs = async () => {
+      try {
+        const { data } = await axios.get('/api/clubs');
+        setClubs(data);
+      } catch (error) {
+        console.error('Error fetching clubs:', error);
+      }
+    };
+
+    fetchClubs();
+  }, []);
+
   return (
     <section id="clubs" className="mt-20 min-h-screen">
       <div>
@@ -100,13 +125,25 @@ const Clubs = () => {
           develop skills, and make new friends with similar passions.
         </p>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-center">
-          {clubsData.map((club, index) => (
-            <ClubCard 
-              key={club.id}
-              index={index}
-              {...club}
-            />
+        <div className="container mx-auto mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {clubs.map((club) => (
+<div key={club._id} className="bg-gray-800 rounded-lg shadow-lg overflow-hidden flex flex-col h-[450px]">
+            <img src={club.image} alt={club.name} className="w-full h-48 object-cover flex-shrink-0" />
+            <div className="p-6 flex flex-col flex-grow">
+              <h3 className="text-xl font-bold mb-2 text-white">{club.name}</h3>
+              <p className="text-gray-300 mb-4 flex-grow">{club.description}</p>
+              <div className="flex space-x-4 mt-auto">
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300">
+                    Explore
+                  </button>
+                  {isLoggedIn && (
+                    <Link to={`/clubs/${club._id}/events`} className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-300">
+                      Events
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>

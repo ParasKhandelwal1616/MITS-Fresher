@@ -1,6 +1,39 @@
 @import "tailwindcss";
+
+:root {
+  --color-primary: #6366f1; /* Indigo 500 */
+  --color-secondary: #8b5cf6; /* Violet 500 */
+  --color-accent: #ec4899; /* Pink 500 */
+  --color-text-light: #e2e8f0; /* Slate 200 */
+  --color-text-dark: #1e293b; /* Slate 800 */
+  --color-background: #0f172a; /* Slate 900 */
+  --color-card-background: #1e293b; /* Slate 800 */
+  --color-border: #334155; /* Slate 700 */
+}
+
 body {
     @apply m-0 overflow-x-hidden bg-slate-900 text-white;
+    font-family: 'Inter', sans-serif; /* Using a modern sans-serif font */
+    background-color: var(--color-background);
+    color: var(--color-text-light);
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
 }
 
 canvas {
