@@ -1,17 +1,17 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const VideoSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  url: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-  },
+    title: {
+        type: String,
+        required: true,
+    },
+    url: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+    },
 });
 
-module.exports = mongoose.model('Video', VideoSchema);
+export default mongoose.model('Video', VideoSchema);

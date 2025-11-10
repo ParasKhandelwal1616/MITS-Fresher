@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useToast } from '../components/Toast';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  const showToast = useToast();
 
   const { email, password } = formData;
 
@@ -20,7 +23,7 @@ const Login = () => {
       localStorage.setItem('userRole', data.role);
       window.location.href = '/'; // Redirect to homepage
     } catch (error) {
-      console.error('Login error:', error.response.data.message);
+      showToast(error.response.data.message, 'error');
     }
   };
 

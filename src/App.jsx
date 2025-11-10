@@ -24,6 +24,11 @@ const ClubAdminRoute = ({ children }) => {
   return userRole === 'clubAdmin' ? children : <Navigate to="/login" />;
 };
 
+const PrivateRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
+  return token ? children : <Navigate to="/login" />;
+};
+
 // Main App Component
 const App = () => {
   return (
@@ -40,7 +45,14 @@ const App = () => {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/clubs/:clubId/events" element={<Events />} />
+          <Route 
+            path="/clubs/:clubId/events"
+            element={
+              <PrivateRoute>
+                <Events />
+              </PrivateRoute>
+            }
+          />
 
           {/* Admin-only Private Route */}
           <Route 

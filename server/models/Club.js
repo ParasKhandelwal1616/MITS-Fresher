@@ -13,6 +13,9 @@ const ClubSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  instagram: {
+    type: String,
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

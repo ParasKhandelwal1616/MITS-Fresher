@@ -15,7 +15,7 @@ const EditModal = ({ item, onSave, onCancel, type }) => {
   };
 
   const fields = type === 'club' 
-    ? [{ name: 'name', label: 'Club Name' }, { name: 'description', label: 'Description' }, { name: 'image', label: 'Image URL' }]
+    ? [{ name: 'name', label: 'Club Name' }, { name: 'description', label: 'Description' }, { name: 'image', label: 'Image URL' }, { name: 'instagram', label: 'Instagram Handle' }]
     : [{ name: 'title', label: 'Video Title' }, { name: 'url', label: 'YouTube URL' }, { name: 'description', label: 'Description' }];
 
   return (
@@ -53,7 +53,7 @@ const AdminDashboard = () => {
   const [videos, setVideos] = useState([]);
   
   // State for forms
-  const [newClubData, setNewClubData] = useState({ name: '', description: '', image: '' });
+  const [newClubData, setNewClubData] = useState({ name: '', description: '', image: '', instagram: '' });
   const [newVideoData, setNewVideoData] = useState({ title: '', url: '', description: '' });
 
   // State for UI
@@ -90,7 +90,7 @@ const AdminDashboard = () => {
     try {
       await axios.post('/api/clubs', newClubData, { headers: { 'Authorization': `Bearer ${getToken()}` } });
       alert('Club added successfully!');
-      setNewClubData({ name: '', description: '', image: '' });
+      setNewClubData({ name: '', description: '', image: '', instagram: '' });
       fetchClubs();
       setClubTab('manage');
     } catch (error) {
@@ -192,6 +192,10 @@ const AdminDashboard = () => {
                 <label className="block mb-2">Image URL</label>
                 <input type="text" name="image" value={newClubData.image} onChange={handleNewClubChange} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" required />
               </div>
+              <div className="mb-4">
+                <label className="block mb-2">Instagram Handle</label>
+                <input type="text" name="instagram" value={newClubData.instagram} onChange={handleNewClubChange} className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg" />
+              </div>
               <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300">Add Club</button>
             </form>
           )}
@@ -242,3 +246,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+

@@ -50,12 +50,13 @@ exports.getAvailableClubs = async (req, res) => {
 // @route   POST /api/clubs
 // @access  Admin
 exports.createClub = async (req, res) => {
-  const { name, description, image } = req.body;
+  const { name, description, image, instagram } = req.body;
   try {
     const club = new Club({
       name,
       description,
       image,
+      instagram,
       createdBy: req.user._id,
     });
     const createdClub = await club.save();
@@ -69,7 +70,7 @@ exports.createClub = async (req, res) => {
 // @route   PATCH /api/clubs/:id
 // @access  Admin, ClubAdmin
 exports.updateClub = async (req, res) => {
-  const { name, description, image } = req.body;
+  const { name, description, image, instagram } = req.body;
   try {
     const club = await Club.findById(req.params.id);
     if (club) {
@@ -79,6 +80,7 @@ exports.updateClub = async (req, res) => {
       club.name = name || club.name;
       club.description = description || club.description;
       club.image = image || club.image;
+      club.instagram = instagram || club.instagram;
       const updatedClub = await club.save();
       res.json(updatedClub);
     } else {
@@ -96,7 +98,7 @@ exports.deleteClub = async (req, res) => {
   try {
     const club = await Club.findById(req.params.id);
     if (club) {
-      await club.remove();
+      await Club.findByIdAndDelete(req.params.id);
       res.json({ message: 'Club removed' });
     } else {
       res.status(404).json({ message: 'Club not found' });

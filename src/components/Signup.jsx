@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useToast } from '../components/Toast';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ const Signup = () => {
   });
   const [availableClubs, setAvailableClubs] = useState([]);
 
+  const showToast = useToast();
+
   const { name, email, password, role, associatedClub } = formData;
 
   useEffect(() => {
@@ -21,13 +24,14 @@ const Signup = () => {
           setAvailableClubs(data);
         } catch (error) {
           console.error('Error fetching available clubs:', error);
+          showToast('Error fetching available clubs.', 'error');
         }
       };
       fetchAvailableClubs();
     } else {
       setAvailableClubs([]);
     }
-  }, [role]);
+  }, [role, showToast]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,11 +42,11 @@ const Signup = () => {
       const { data } = await axios.post('/api/auth/signup', formData);
       localStorage.setItem('token', data.token);
       localStorage.setItem('userRole', data.role);
+      showToast('Signup successful!', 'success');
       window.location.href = '/'; // Redirect to homepage after signup
     } catch (error) {
       const message = error.response?.data?.message || 'An unknown error occurred during signup.';
-      console.error('Signup error:', message);
-      alert(`Signup Failed: ${message}`);
+      showToast(`Signup Failed: ${message}`, 'error');
     }
   };
 
