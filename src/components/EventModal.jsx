@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const EventModal = ({ event, onClose }) => {
   if (!event) return null;
   
-  const backendUrl = 'http://localhost:5000';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   return (
     <AnimatePresence>

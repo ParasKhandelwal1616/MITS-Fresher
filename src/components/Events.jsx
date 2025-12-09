@@ -9,7 +9,7 @@ const Events = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { clubId } = useParams();
-  const backendUrl = 'http://localhost:5000';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const handleMouseMove = (e) => {
