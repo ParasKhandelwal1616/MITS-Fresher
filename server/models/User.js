@@ -23,6 +23,16 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Club',
   },
+  otp: {
+    type: String,
+  },
+  otpExpires: {
+    type: Date,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('User', UserSchema);
