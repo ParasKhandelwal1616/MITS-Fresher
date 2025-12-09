@@ -12,6 +12,7 @@ import Signup from './components/Signup';
 import Events from './components/Events';
 import AdminDashboard from './components/AdminDashboard';
 import ClubAdminDashboard from './components/ClubAdminDashboard';
+import Verification from './components/Verification';
 
 // A wrapper for protected routes
 const AdminRoute = ({ children }) => {
@@ -45,6 +46,7 @@ const App = () => {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/verification" element={<Verification />} />
           <Route 
             path="/clubs/:clubId/events"
             element={

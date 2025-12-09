@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useToast } from '../components/Toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +14,7 @@ const Login = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const showToast = useToast();
+  const navigate = useNavigate();
   const { email, password } = formData;
 
   React.useEffect(() => {
@@ -42,7 +43,13 @@ const Login = () => {
         window.location.href = '/';
       }, 1000);
     } catch (error) {
-      showToast(error.response?.data?.message || 'Login failed', 'error');
+      const message = error.response?.data?.message || 'Login failed';
+      showToast(message, 'error');
+      if (message === 'Please verify your email to login.') {
+        setTimeout(() => {
+          navigate('/verification', { state: { email } });
+        }, 1000);
+      }
       setIsLoading(false);
     }
   };
