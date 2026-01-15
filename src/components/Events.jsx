@@ -26,7 +26,7 @@ const Events = () => {
     const fetchEvents = async () => {
       try {
         const token = localStorage.getItem('token');
-        const { data } = await axios.get(`/api/events/club/${clubId}`, {
+        const { data } = await axios.get(`${backendUrl}/api/events/club/${clubId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEvents(data);

@@ -64,6 +64,8 @@ const clubsData = [
   { id: 53, name: "The Speakers Club", logo: "https://via.placeholder.com/100", description: "Public speaking and communication.", instagram: "https://instagram.com/speakersclub" }
 ];
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const Clubs = () => {
   const [clubs, setClubs] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -88,7 +90,7 @@ const Clubs = () => {
 
     const fetchClubs = async () => {
       try {
-        const { data } = await axios.get('/api/clubs');
+        const { data } = await axios.get(`${backendUrl}/api/clubs`);
         setClubs(data);
       } catch (error) {
         console.error('Error fetching clubs:', error);

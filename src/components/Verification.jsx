@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Toast from './Toast';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const Verification = () => {
   const [otp, setOtp] = useState('');
   const [timer, setTimer] = useState(30);
@@ -26,7 +28,7 @@ const Verification = () => {
     setError('');
     setSuccess('');
     try {
-      const { data } = await axios.post('/api/auth/verify-otp', { email, otp });
+      const { data } = await axios.post(`${backendUrl}/api/auth/verify-otp`, { email, otp });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate('/');
     } catch (err) {
@@ -38,7 +40,7 @@ const Verification = () => {
     setError('');
     setSuccess('');
     try {
-      await axios.post('/api/auth/resend-otp', { email });
+      await axios.post(`${backendUrl}/api/auth/resend-otp`, { email });
       setSuccess('A new OTP has been sent to your email.');
       setTimer(30);
     } catch (err) {

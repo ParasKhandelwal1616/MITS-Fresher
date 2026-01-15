@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const VideoCard = ({ title, url, description, index }) => {
   const [showVideo, setShowVideo] = useState(false);
   const videoId = url ? url.split('v=')[1] : null;
@@ -152,7 +154,7 @@ const VideoGallery = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const { data } = await axios.get('/api/videos');
+        const { data } = await axios.get(`${backendUrl}/api/videos`);
         setVideos(data);
       } catch (error) {
         console.error('Error fetching videos:', error);

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 // Reusable Modal Component for Editing
 const EditModal = ({ item, onSave, onCancel, type }) => {
   const [formData, setFormData] = useState(item);
@@ -148,12 +150,12 @@ const AdminDashboard = () => {
   }, []);
 
   const fetchClubs = async () => {
-    const { data } = await axios.get('/api/clubs');
+    const { data } = await axios.get(`${backendUrl}/api/clubs`);
     setClubs(data);
   };
 
   const fetchVideos = async () => {
-    const { data } = await axios.get('/api/videos');
+    const { data } = await axios.get(`${backendUrl}/api/videos`);
     setVideos(data);
   };
 
@@ -163,7 +165,7 @@ const AdminDashboard = () => {
   const handleAddClubSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/clubs', newClubData, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+      await axios.post(`${backendUrl}/api/clubs`, newClubData, { headers: { 'Authorization': `Bearer ${getToken()}` } });
       alert('Club added successfully!');
       setNewClubData({ name: '', description: '', image: '', instagram: '' });
       fetchClubs();
@@ -176,7 +178,7 @@ const AdminDashboard = () => {
   const handleAddVideoSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/videos', newVideoData, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+      await axios.post(`${backendUrl}/api/videos`, newVideoData, { headers: { 'Authorization': `Bearer ${getToken()}` } });
       alert('Video added successfully!');
       setNewVideoData({ title: '', url: '', description: '' });
       fetchVideos();
@@ -189,7 +191,7 @@ const AdminDashboard = () => {
   const handleDeleteClub = async (id) => {
     if (window.confirm('Are you sure you want to delete this club?')) {
       try {
-        await axios.delete(`/api/clubs/${id}`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+        await axios.delete(`${backendUrl}/api/clubs/${id}`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
         fetchClubs();
       } catch (error) { console.error('Failed to delete club', error); }
     }
@@ -198,7 +200,7 @@ const AdminDashboard = () => {
   const handleDeleteVideo = async (id) => {
     if (window.confirm('Are you sure you want to delete this video?')) {
       try {
-        await axios.delete(`/api/videos/${id}`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+        await axios.delete(`${backendUrl}/api/videos/${id}`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
         fetchVideos();
       } catch (error) { console.error('Failed to delete video', error); }
     }
@@ -212,10 +214,10 @@ const AdminDashboard = () => {
   const handleSave = async (updatedItem) => {
     try {
       if (itemType === 'club') {
-        await axios.patch(`/api/clubs/${updatedItem._id}`, updatedItem, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+        await axios.patch(`${backendUrl}/api/clubs/${updatedItem._id}`, updatedItem, { headers: { 'Authorization': `Bearer ${getToken()}` } });
         fetchClubs();
       } else if (itemType === 'video') {
-        await axios.patch(`/api/videos/${updatedItem._id}`, updatedItem, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+        await axios.patch(`${backendUrl}/api/videos/${updatedItem._id}`, updatedItem, { headers: { 'Authorization': `Bearer ${getToken()}` } });
         fetchVideos();
       }
     } catch (error) { console.error(`Failed to update ${itemType}`, error); }

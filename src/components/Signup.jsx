@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useToast } from '../components/Toast';
 import { Link, useNavigate } from 'react-router-dom';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -36,7 +38,7 @@ const Signup = () => {
     if (role === 'clubAdmin') {
       const fetchAvailableClubs = async () => {
         try {
-          const { data } = await axios.get('/api/clubs/available');
+          const { data } = await axios.get(`${backendUrl}/api/clubs/available`);
           setAvailableClubs(data);
         } catch (error) {
           console.error('Error fetching available clubs:', error);
@@ -56,7 +58,7 @@ const Signup = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { data } = await axios.post('/api/auth/signup', formData);
+      const { data } = await axios.post(`${backendUrl}/api/auth/signup`, formData);
       showToast('OTP sent to your email!', 'success');
       setTimeout(() => {
         navigate('/verification', { state: { email } });

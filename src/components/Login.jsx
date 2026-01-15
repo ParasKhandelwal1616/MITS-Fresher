@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useToast } from '../components/Toast';
 import { Link, useNavigate } from 'react-router-dom';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -35,7 +37,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { data } = await axios.post('/api/auth/login', formData);
+      const { data } = await axios.post(`${backendUrl}/api/auth/login`, formData);
       localStorage.setItem('token', data.token);
       localStorage.setItem('userRole', data.role);
       showToast('Login successful!', 'success');

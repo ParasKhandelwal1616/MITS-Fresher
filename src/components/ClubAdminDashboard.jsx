@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const ClubAdminDashboard = () => {
   const [club, setClub] = useState(null);
   const [events, setEvents] = useState([]);
@@ -28,14 +30,14 @@ const ClubAdminDashboard = () => {
   const fetchClubData = async () => {
     try {
       const config = { headers: { 'Authorization': `Bearer ${getToken()}` } };
-      const userRes = await axios.get('/api/auth/me', config);
+      const userRes = await axios.get(`${backendUrl}/api/auth/me`, config);
       const clubId = userRes.data.associatedClub;
 
       if (clubId) {
-        const clubRes = await axios.get(`/api/clubs/${clubId}`);
+        const clubRes = await axios.get(`${backendUrl}/api/clubs/${clubId}`);
         setClub(clubRes.data);
 
-        const eventsRes = await axios.get(`/api/events/club/${clubId}`, config);
+        const eventsRes = await axios.get(`${backendUrl}/api/events/club/${clubId}`, config);
         setEvents(eventsRes.data);
       }
     } catch (error) {
@@ -74,7 +76,7 @@ const ClubAdminDashboard = () => {
 
     try {
       const config = { headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'multipart/form-data' } };
-      await axios.post(`/api/events/club/${club._id}`, formData, config);
+      await axios.post(`${backendUrl}/api/events/club/${club._id}`, formData, config);
       alert('Event added successfully!');
       fetchClubData();
       setNewEvent({ title: '', googleFormLink: '', promoVideoUrl: '' });
@@ -90,7 +92,7 @@ const ClubAdminDashboard = () => {
     if (window.confirm('Are you sure you want to delete this event?')) {
       try {
         const config = { headers: { 'Authorization': `Bearer ${getToken()}` } };
-        await axios.delete(`/api/events/${eventId}`, config);
+        await axios.delete(`${backendUrl}/api/events/${eventId}`, config);
         fetchClubData();
       } catch (error) {
         console.error("Error deleting event:", error);
@@ -122,7 +124,7 @@ const ClubAdminDashboard = () => {
 
     try {
       const config = { headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'multipart/form-data' } };
-      await axios.patch(`/api/events/${editingEvent._id}`, formData, config);
+      await axios.patch(`${backendUrl}/api/events/${editingEvent._id}`, formData, config);
       alert('Event updated successfully!');
       fetchClubData();
       setEditingEvent(null);
